@@ -1,0 +1,64 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>Courses</title> 
+     {% load static %}  
+         <link rel="stylesheet" href="{% static 'manage_courses_app/css/style.css' %}" media="screen" title="no title"  charset="utf-8">  
+</head> 
+<body> 
+     <div id="wrapper"> 
+         <h1>Add a new course</h1> 
+         <div id="content_layer">
+            <form action="/create/" method="post"> 
+                {% csrf_token %} 
+                <div id="labels">
+                    <label for="name"><span>First Name:</span> 
+                        <input type="text" name="name" id="name" placeholder="Enter Name" value="{{ request.session.name }}"></label>
+                    <label for="desc"><span>Description:</span> 
+                        <textarea type="text" name="desc" id="desc" placeholder="Enter Description" value="{{ request.session.desc }}" rows="5"></textarea></label>
+                </div>
+                <div id="errorLayer">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            {{ message }}
+                        </p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <span>
+                    <input type='submit' value='Add'>
+                </span>
+            </form> 
+            <div id="show_layer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Description</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if courses %}
+                        {% for course in courses %}
+                            <tr>
+                                <td>{{ course.name }}</td>
+                                <td>{{ course.desc }}</td>
+                                <td class="nowrap">{{ course.created_at }}</td>
+                                <td>
+                                    <!-- <a href="/comment/{{ course.id }}/">Comment</a> -->
+                                    <a href="/delete/{{ course.id }}/">Remove</a>
+                                </td>
+                            </td>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+         </div> 
+     </div> 
+</body> 
+</html> 
